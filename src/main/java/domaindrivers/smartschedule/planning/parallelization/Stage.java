@@ -7,14 +7,19 @@ import java.util.Objects;
 import java.util.Set;
 
 public record Stage(String stageName, Set<Stage> dependencies, Set<ResourceName> resources,
-                    Duration duration) {
+                    Duration duration, Set<DependencyRule> dependencyRules) {
 
     public Stage(String name) {
-        this(name, new HashSet<>(), new HashSet<>(), Duration.ZERO);
+        this(name, new HashSet<>(), new HashSet<>(), Duration.ZERO, new HashSet<>());
     }
 
     public Stage dependsOn(Stage stage) {
         this.dependencies.add(stage);
+        return this;
+    }
+
+    public Stage addDependencyRule(DependencyRule dependencyRule) {
+        this.dependencyRules.add(dependencyRule);
         return this;
     }
 
