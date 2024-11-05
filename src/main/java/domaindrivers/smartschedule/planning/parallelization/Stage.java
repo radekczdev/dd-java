@@ -9,10 +9,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public record Stage(String stageName, Set<Stage> dependencies, Set<ResourceName> resources,
-                    Duration duration, Set<DependencyRule> dependencyRules) {
+                    Duration duration) {
 
     public Stage(String name) {
-        this(name, new HashSet<>(), new HashSet<>(), Duration.ZERO, new HashSet<>());
+        this(name, new HashSet<>(), new HashSet<>(), Duration.ZERO);
     }
 
     public Stage dependsOn(Stage stage) {
@@ -20,11 +20,6 @@ public record Stage(String stageName, Set<Stage> dependencies, Set<ResourceName>
         newDependencies.add(stage);
         this.dependencies.add(stage);
         return new Stage(stageName, newDependencies, resources, duration);
-    }
-
-    public Stage addDependencyRule(DependencyRule dependencyRule) {
-        this.dependencyRules.add(dependencyRule);
-        return this;
     }
 
     public String name() {
